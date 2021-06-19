@@ -14,9 +14,9 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class Servidor extends Conexion //Se hereda de conexión para hacer uso de los sockets y demás
+public class ServidorPrincipal extends Conexion //Se hereda de conexión para hacer uso de los sockets y demás
 {
-    public Servidor() throws IOException{super("servidor");} //Se usa el constructor para servidor de Conexion
+    public ServidorPrincipal() throws IOException{super("servidor");} //Se usa el constructor para servidor de Conexion
 
     public void startServer()//Método para iniciar el servidor
     {
@@ -37,15 +37,16 @@ public class Servidor extends Conexion //Se hereda de conexión para hacer uso d
             //Se obtiene el flujo entrante desde el cliente
             BufferedReader entrada = new BufferedReader(new InputStreamReader(cs.getInputStream()));
 
-            while((mensajeServidor = entrada.readLine()) != null) //Mientras haya mensajes desde el cliente
+            while("Fin".equals(mensajeServidor = entrada.readLine())) //Mientras haya mensajes desde el cliente
             {
+                System.out.println("Fin de la conexión");
+
+                ss.close();//Se finaliza la conexión con el cliente
                 //Se muestra por pantalla el mensaje recibido
-                System.out.println(mensajeServidor);
+
             }
 
-            System.out.println("Fin de la conexión");
-
-            ss.close();//Se finaliza la conexión con el cliente
+              System.out.println(mensajeServidor);
         }
         catch (IOException e)
         {

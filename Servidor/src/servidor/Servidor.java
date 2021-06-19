@@ -6,7 +6,7 @@
 package servidor;
 
 import java.io.IOException;
-import servidor.util.Servidor;
+import servidor.util.ServidorPrincipal;
 /**
  *
  * @author rache
@@ -19,7 +19,7 @@ public class Servidor {
      */
    public static void main(String[] args) throws IOException
     {
-        Servidor serv = new Servidor(); //Se crea el servidor
+        ServidorPrincipal serv = new ServidorPrincipal(); //Se crea el servidor
 
         System.out.println("Iniciando servidor\n");
         serv.startServer(); //Se inicia el servidor
