@@ -5,8 +5,8 @@
  */
 package servidor;
 
-import java.io.IOException;
 import servidor.util.ServidorPrincipal;
+
 /**
  *
  * @author rache
@@ -14,15 +14,12 @@ import servidor.util.ServidorPrincipal;
 public class Servidor {
 
     /**
-     * @param args the command line arguments
-     * @throws java.io.IOException
+     * @param arg
      */
-   public static void main(String[] args) throws IOException
-    {
-        ServidorPrincipal serv = new ServidorPrincipal(); //Se crea el servidor
+    public static void main(String arg[]) {
+        ServidorPrincipal sp = new ServidorPrincipal(9990);
+        sp.iniciar();
 
-        System.out.println("Iniciando servidor\n");
-        serv.startServer(); //Se inicia el servidor
     }
-    
+
 }

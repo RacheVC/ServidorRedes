@@ -9,49 +9,56 @@ package servidor.util;
  *
  * @author rache
  */
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.net.*;
+import java.util.*;
 
-public class ServidorPrincipal extends Conexion //Se hereda de conexión para hacer uso de los sockets y demás
+public class ServidorPrincipal //Se hereda de conexión para hacer uso de los sockets y demás
 {
-    public ServidorPrincipal() throws IOException{super("servidor");} //Se usa el constructor para servidor de Conexion
+    private ServerSocket sServidor;
+    private Socket sCliente;
+    private Scanner entrada;
+    private PrintStream salida;
+    private final int puerto;
+    private String mensaje = "";
 
-    public void startServer()//Método para iniciar el servidor
-    {
-        try
-        {
-            System.out.println("Esperando..."); //Esperando conexión
+    public ServidorPrincipal(int p) {
+        puerto = p;
+    }
 
-            cs = ss.accept(); //Accept comienza el socket y espera una conexión desde un cliente
-
-            System.out.println("Cliente en línea");
-
-            //Se obtiene el flujo de salida del cliente para enviarle mensajes
-            salidaCliente = new DataOutputStream(cs.getOutputStream());
-
-            //Se le envía un mensaje al cliente usando su flujo de salida
-            salidaCliente.writeUTF("Petición recibida y aceptada");
-
-            //Se obtiene el flujo entrante desde el cliente
-            BufferedReader entrada = new BufferedReader(new InputStreamReader(cs.getInputStream()));
-
-            while("Fin".equals(mensajeServidor = entrada.readLine())) //Mientras haya mensajes desde el cliente
-            {
-                System.out.println("Fin de la conexión");
-
-                ss.close();//Se finaliza la conexión con el cliente
-                //Se muestra por pantalla el mensaje recibido
-
+    public void iniciar() {
+        try {
+            sServidor = new ServerSocket(puerto);
+            System.out.println(" - SERVIDOR INICIADO - ");
+            System.out.println(" - Esperando Cliente - ");
+            sCliente = sServidor.accept();
+            entrada = new Scanner(sCliente.getInputStream());
+            salida = new PrintStream(sCliente.getOutputStream());
+//Se reenvía los mensajes que van llegando hasta q el cliente introduzca la palabra
+//”bye”,
+            while (!mensaje.equals("bye")) {
+                mensaje = entrada.next();
+                System.out.println("Mensaje cliente: " + mensaje);
+                salida.println("Eco:_" + mensaje);
             }
-
-              System.out.println(mensajeServidor);
+            finalizar();
+        } catch (IOException e) {
+            System.out.println(e);
+            finalizar();
         }
-        catch (IOException e)
-        {
-            System.out.println(e.getMessage());
+    }
+
+    public void finalizar() {
+        try {
+            salida.close();
+            entrada.close();
+            sCliente.close();
+            sServidor.close();
+            System.out.print("Conexion Finalizada!!");
+        } catch (IOException e) {
+           System.out.println(e);
         }
     }
 }
+
 
