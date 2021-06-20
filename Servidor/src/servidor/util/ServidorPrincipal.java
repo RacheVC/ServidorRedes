@@ -36,7 +36,7 @@ public class ServidorPrincipal //Se hereda de conexión para hacer uso de los so
             salida = new PrintStream(sCliente.getOutputStream());
 //Se reenvía los mensajes que van llegando hasta q el cliente introduzca la palabra
 //”bye”,
-            while (!mensaje.equals("bye")) {
+            while (!mensaje.equals("fin")) {
                 mensaje = entrada.next();
                 System.out.println("Mensaje cliente: " + mensaje);
                 salida.println("Eco:_" + mensaje);
